@@ -8,42 +8,70 @@
 
 
 #include <iostream>
-#include <random>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
-int main()
-{
-	const int minValue = 100,
-		maxValue = 700;
-
-	int num_1,
-		num_2,
-		answer;
-
-	random_device engine;
-	uniform_int_distribution<int>diceValuw(minValue, maxValue);
-
-	cout << endl;
-	cout << "-----\n\n";
-	cout << "This program displays two random numbers\n";
-	cout << "To be added.\n" << endl;
-
-	num_1 = (rand() % (maxValue - minValue + 1)) + minValue;
-	num_2 = (rand() % (maxValue - minValue + 1)) + minValue;
-
-	answer = num_1 + num_2;
-
-	cout << num_1 << "+" << num_2 << "= ?" << endl;
-
-	cout << "Please Press Enter For Answer";
-	cin.get();
-	cout << endl;
-
-	cout << num_1 << "+" << num_2 << "=";
-	cout << answer << endl;
-	cout << "\n-----------\n";
-	cout << endl;
-
-	return 0;
+// Random Number 
+int getRandomNumber(int min, int max) {
+    return min + rand() % (max - min + 1);
 }
+
+// Math problem
+void createMathProblem(int& num1, int& num2, int& answer) {
+    num1 = getRandomNumber(100, 700);
+    num2 = getRandomNumber(100, 700);
+    answer = num1 + num2;
+}
+
+// user input
+int getUserGuess() {
+    int guess;
+    cout << "Your answer: ";
+    cin >> guess;
+    return guess;
+}
+
+// display
+void showTitle() {
+    cout << "Math Tutor";
+}
+
+void showProblem(int a, int b) {
+    cout << "Problem: " << a << " + " << b << " = ?\n";
+}
+
+void showResult(bool isCorrect, int correctAnswer) {
+    if (isCorrect) {
+        cout << " Correct.\n";
+    }
+    else {
+        cout << " Incorrect. The answer is: " << correctAnswer;
+    }
+    cout << "----------\n";
+}
+
+// main program
+int main() {
+    srand(time(0)); // Initialize random numbers
+
+    int num1, num2, correctAnswer;
+    createMathProblem(num1, num2, correctAnswer);
+
+    showTitle();
+    showProblem(num1, num2);
+
+    int userAnswer = getUserGuess();
+    bool isCorrect = (userAnswer == correctAnswer);
+
+    showResult(isCorrect, correctAnswer);
+
+    // Keep window open
+    cout << "\nPress Enter to exit.";
+    cin.ignore();
+    cin.get();
+
+    return 0;
+}
+
 
