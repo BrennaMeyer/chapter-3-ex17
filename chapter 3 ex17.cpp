@@ -12,66 +12,93 @@
 #include <ctime>
 using namespace std;
 
-// Random Number 
-int getRandomNumber(int min, int max) {
+// Random Number
+int getRandom(int min, int max) {
     return min + rand() % (max - min + 1);
 }
 
-// Math problem
-void createMathProblem(int& num1, int& num2, int& answer) {
-    num1 = getRandomNumber(100, 700);
-    num2 = getRandomNumber(100, 700);
+//Math Problem
+void makeAddition(int& num1, int& num2, int& answer) {
+    num1 = getRandom(100, 700);
+    num2 = getRandom(100, 700);
     answer = num1 + num2;
 }
 
-// user input
-int getUserGuess() {
-    int guess;
-    cout << "Your answer: ";
-    cin >> guess;
-    return guess;
+void makeSubtraction(int& num1, int& num2, int& answer) {
+    num1 = getRandom(100, 700);
+    num2 = getRandom(100, num1);
+    answer = num1 - num2;
 }
 
-// display
-void showTitle() {
-    cout << "Math Tutor";
+void makeMultiplication(int& num1, int& num2, int& answer) {
+    num1 = getRandom(10, 40);
+    num2 = getRandom(10, 40);
+    answer = num1 * num2;
 }
 
-void showProblem(int a, int b) {
-    cout << "Problem: " << a << " + " << b << " = ?\n";
+void makeDivision(int& num1, int& num2, int& answer) {
+    num2 = getRandom(10, 40);
+    answer = getRandom(10, 40);
+    num1 = answer * num2;
 }
 
-void showResult(bool isCorrect, int correctAnswer) {
-    if (isCorrect) {
-        cout << " Correct.\n";
-    }
-    else {
-        cout << " Incorrect. The answer is: " << correctAnswer;
-    }
-    cout << "----------\n";
+//menu
+void showMenu() {
+    cout << "Math tutor\n";
+    cout << "1. Addition\n2. Subtraction\n";
+    cout << "3. Multiplication\n4. Division\n5. Exit\n";
+    cout << "Choose (1-5): ";
 }
 
-// main program
+void showProblem(int num1, int num2, char op) {
+    cout << num1 << " " << op << " " << num2 << " = ?\n";
+}
+
+void showResult(bool correct, int answer) {
+    if (correct) cout << "Correct.\n";
+    else cout << "Wrong. Answer: " << answer << "\n";
+}
+
+// main
 int main() {
-    srand(time(0)); // Initialize random numbers
+    srand(time(0));
 
-    int num1, num2, correctAnswer;
-    createMathProblem(num1, num2, correctAnswer);
+    while (true) {
+        showMenu();
+        int choice;
+        cin >> choice;
 
-    showTitle();
-    showProblem(num1, num2);
+        if (choice == 5) {
+            cout << "Goodbye.\n";
+            break;
+        }
 
-    int userAnswer = getUserGuess();
-    bool isCorrect = (userAnswer == correctAnswer);
+        int num1,
+            num2,
+            answer;
+        char op;
 
-    showResult(isCorrect, correctAnswer);
+        switch (choice) {
+        case 1: makeAddition(num1, num2, answer); op = '+'; break;
+        case 2: makeSubtraction(num1, num2, answer); op = '-'; break;
+        case 3: makeMultiplication(num1, num2, answer); op = '*'; break;
+        case 4: makeDivision(num1, num2, answer); op = '/'; break;
+        default: cout << "Invalid choice\n"; continue;
+        }
 
-    // Keep window open
-    cout << "\nPress Enter to exit.";
-    cin.ignore();
-    cin.get();
+        showProblem(num1, num2, op);
+        int userAnswer;
+        cout << "Your answer: ";
+        cin >> userAnswer;
+        showResult(userAnswer == answer, answer);
+
+        cout << "Press Enter to continue";
+        cin.ignore();
+        cin.get();
+    }
 
     return 0;
 }
+
 
 
